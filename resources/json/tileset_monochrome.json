@@ -1,0 +1,14 @@
+{ "columns":32,
+ "image":"..\/..\/..\/..\/..\/..\/Users\/STEFAN\/Desktop\/Tilesheet\/monochrome.png",
+ "imageheight":543,
+ "imagewidth":543,
+ "margin":0,
+ "name":"monochrome",
+ "spacing":1,
+ "tilecount":1024,
+ "tiledversion":"1.2.4",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":1.2
+}
