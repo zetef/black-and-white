@@ -7,3 +7,24 @@
 [submodule "libraries/lume"]
 	path = libraries/lume
 	url = https://github.com/rxi/lume/
+[submodule "libraries/baton"]
+	path = libraries/baton
+	url = https://github.com/tesselode/baton
+[submodule "libraries/push"]
+	path = libraries/push
+	url = https://github.com/Ulydev/push
+[submodule "libraries/jsonlua"]
+	path = libraries/jsonlua
+	url = https://github.com/rxi/json.lua
+[submodule "libraries/autobatch"]
+	path = libraries/autobatch
+	url = https://github.com/rxi/autobatch
+[submodule "libraries/log"]
+	path = libraries/log
+	url = https://github.com/rxi/autobatch
+[submodule "libraries/debug-graph"]
+	path = libraries/debug-graph
+	url = https://github.com/Mechazawa/Love-Debug-Graph
+[submodule "libraries/shack"]
+	path = libraries/shack
+	url = https://github.com/Ulydev/shack
