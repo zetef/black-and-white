@@ -13,8 +13,8 @@
 [submodule "libraries/push"]
 	path = libraries/push
 	url = https://github.com/Ulydev/push
-[submodule "libraries/jsonlua"]
-	path = libraries/jsonlua
+[submodule "libraries/json"]
+	path = libraries/json
 	url = https://github.com/rxi/json.lua
 [submodule "libraries/autobatch"]
 	path = libraries/autobatch
