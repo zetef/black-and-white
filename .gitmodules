@@ -25,3 +25,6 @@
 [submodule "libraries/shack"]
 	path = libraries/shack
 	url = https://github.com/Ulydev/shack
+[submodule "libraries/log"]
+	path = libraries/log
+	url = https://github.com/rxi/log.lua
