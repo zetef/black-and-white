@@ -19,9 +19,6 @@
 [submodule "libraries/autobatch"]
 	path = libraries/autobatch
 	url = https://github.com/rxi/autobatch
-[submodule "libraries/log"]
-	path = libraries/log
-	url = https://github.com/rxi/autobatch
 [submodule "libraries/debug-graph"]
 	path = libraries/debug-graph
 	url = https://github.com/Mechazawa/Love-Debug-Graph

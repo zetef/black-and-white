@@ -1,7 +1,8 @@
 local Object = require "libraries.classic.classic"
 local push = require "libraries.push.push"
 
-local Room = love.filesystem.load("objects/Room.lua")
+-- TODO: use the lua stdlib
+local Room = love.filesystem.load("objects/Room.lua") 
 
 local Game = Object:extend()
 
@@ -20,15 +21,55 @@ function Game:new(w, h)
 	self.window.width = self.window.width * .5
 	self.window.height = self.window.height * .5
 	
-	self.font = love.graphics.newFont("resources/fonts/VCR_OSD_MONO.ttf", 12, "mono")
+	self.tileset = {}
+	self.tileset.image = love.graphics.newImage("resources/tilesets/monochrome.png")
+	self.tileset.width = self.tileset.image:getWidth()
+	self.tileset.height = self.tileset.image:getHeight()
+	self.tileset.margin = 1
+	self.tileset.spacing = 2
+	self.tileset.rows = 2
+	self.tileset.cols = 4
+	
+	self.tile = {}
+	self.tile.width = (self.tileset.width / self.tileset.cols) - self.tileset.spacing
+	self.tile.height = (self.tileset.height / self.tileset.rows) - self.tileset.spacing
+	
+	self.quads = {}
+	
+	self.CONST = {}
+	self.CONST.zero = 1
+	self.CONST.one = 2
+	self.CONST.zeroTarget = 3
+	self.CONST.oneTarget = 4
+	self.CONST.empty = 5
+	self.CONST.zeroHeart = 6
+	self.CONST.oneHeart = 7
+	self.CONST.arrow = 8
+	
+	self.font = love.graphics.newFont("resources/fonts/VCR_OSD_MONO.ttf",
+		12, "mono"
+	)
 	
 	self.current_room = nil
-	self.rooms_names = {"Menu", "Game", "Over"}
+	--self.rooms_names = {"Menu", "Game", "Over"}
 	self.rooms = {}
 	
 	--[[=========================== setting up ===============================]]
 	
 	love.graphics.setFont(self.font)
+	
+	for i = 0, self.tileset.rows - 1 do
+		for j = 0, self.tileset.cols - 1 do
+			table.insert(self.quads,
+				love.graphics.newQuad(
+					1 + j * (self.tile.width + self.tileset.spacing),
+					1 + i * (self.tile.height + self.tileset.spacing),
+					self.tileset.width, self.tileset.height,
+					self.tile.width, self.tile.height
+				)
+			)
+		end
+	end
 	
 	push:setupScreen(self.width, self.height, 
 		self.window.width, self.window.height,
@@ -81,7 +122,7 @@ function Game:resize(w, h)
 end
 
 function Game:addRoom(room) --string as room name
-	if not self.rooms[room] then 
+	if not self.rooms[room] then
 		self.rooms[room] = Room(room)
 	else
 		print("there already is a room like:", room)
