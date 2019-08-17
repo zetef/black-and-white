@@ -24,7 +24,7 @@ function RMenu:update(dt)
 end
 
 function RMenu:draw()
-	love.graphics.print("Menu", 0, 0)
+	love.graphics.print("menu", 0, 0)
 end
 
 function RMenu:keypressed(key, scancode, isrepeat)

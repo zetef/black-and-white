@@ -9,10 +9,10 @@ function love.load()
 	game.rooms.RGame:addStage( --tutorial
 		{
 			width = 5, 
-			height = 1,
+			height = 3,
 			heart = game.CONST.oneHeart,
-			x = 2, 
-			y = 1,
+			x = 3, 
+			y = 2,
 			zeroes = { --zeroes
 				{x = 4, y = 1},
 			},
@@ -29,8 +29,14 @@ function love.load()
 		"tutorial"
 	)
 	
-	game:gotoRoom("RGame")
+	-- for k, v in pairs(game.rooms.RGame.stages) do
+		-- print(k, v)
+	-- end
+	
 	game.rooms.RGame:gotoStage("tutorial")
+	
+	game:gotoRoom("RGame")
+	
 end
 
 function love.update(dt)
