@@ -12,7 +12,7 @@ function ROver:new()
 			down = {"key:down", "button:dpdown"},
 			action = {"key:x", "button:a"},
 		},
-		joystick = love.joystick.getJoysticks()[1]
+		joystick = game.joysticks[1]
 	}
 	
 	--[[======================================================================]]
@@ -20,11 +20,11 @@ function ROver:new()
 end
 
 function ROver:update(dt)
-	self.input:update(dt)
+	self.input:update()
 end
 
 function ROver:draw()
-	love.graphics.print("Over", 0, 0)
+	love.graphics.print("over", 0, 0)
 end
 
 function ROver:keypressed(key, scancode, isrepeat)

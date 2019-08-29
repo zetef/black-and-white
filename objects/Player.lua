@@ -1,6 +1,7 @@
 local Object = require "libraries.classic.classic"
 local baton = require "libraries.baton.baton"
 local utils = require "utils"
+local Timer = require "libraries.hump.timer"
 
 local Player = Object:extend()
 
@@ -10,8 +11,9 @@ function Player:new()
 	self.x = nil -- in tile numbers, not position on screen
 	self.y = nil
 	self.heart = nil
+	self.timer = Timer.new()
 	
-	self.input = baton.new{
+	self.input = baton.new {
 		controls = {
 			left = {"key:left", "button:dpleft"},
 			right = {"key:right", "button:dpright"},
@@ -34,36 +36,42 @@ end
 
 function Player:update(dt)
 	self.input:update()
+	self.timer:update(dt)
 	
 	--print(self.input:getActiveDevice())
 	
-	if self.input:down("action") then
-		print("you pressed the action button!")
+	if self.input:released("action") then
+		--print("you released the action button!")
+		self.heart = utils.pingpong(self.heart, 
+			game.CONST.zeroHeart, game.CONST.oneHeart
+		)
 	end
 	
-	if self.input:down("left") then
-		print("you pressed the left button!")
+	-- let them with elseif to move diagon-ally (pun intended)
+	if self.input:released("left") then
+		-- print("you released the left button!")
+		-- self.x = self.x - 1
+		self.timer:tween(.3, self, {x = self.x - 1}, "out-quad")
+		--self.timer:after(.3, function)
+	elseif self.input:released("right") then
+		--print("you released the right button!")
+		-- self.x = self.x + 1
+		self.timer:tween(.3, self, {x = self.x + 1}, "out-quad")
 	end
 	
-	if self.input:down("right") then
-		print("you pressed the right button!")
-	end
-	
-	if self.input:down("up") then
-		print("you pressed the up button!")
-	end
-	
-	if self.input:down("down") then
-		print("you pressed the down button!")
+	if self.input:released("up") then
+		--print("you released the up button!")
+		-- self.y = self.y - 1
+		self.timer:tween(.3, self, {y = self.y - 1}, "out-quad")
+	elseif self.input:released("down") then
+		--print("you released the down button!")
+		-- self.y = self.y + 1
+		self.timer:tween(.3, self, {y = self.y + 1}, "out-quad")
 	end
 end
 
 function Player:draw()
-	love.graphics.draw(game.tileset.image,
-		game.quads[self.heart],
-		utils.width_position(self.x - 1),
-		utils.height_position(self.y - 1)
-	)
+	utils.drawTile(self.heart, self.x - 1, self.y - 1)
 end
 
 return Player

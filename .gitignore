@@ -40,8 +40,5 @@ luac.out
 *.x86_64
 *.hex
 
-# Files
-dump
-
 # Folders
 trash_can/

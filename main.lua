@@ -6,24 +6,26 @@ function love.load()
 	game:addRoom("RGame")
 	game:addRoom("ROver")
 	
+	-- good to know: max width/height is 6
+	
 	game.rooms.RGame:addStage( --tutorial
 		{
 			width = 5, 
-			height = 3,
-			heart = game.CONST.oneHeart,
+			height = 5,
+			heart = game.CONST.zeroHeart,
 			x = 3, 
-			y = 2,
-			zeroes = { --zeroes
-				{x = 4, y = 1},
+			y = 3,
+			zeroesGoal = {
+				--{x = 5, y = 1},
 			},
-			zeroesGoal = { --zeroes goal
-				{x = 5, y = 1},
-			}, 
-			ones = { --ones
-				{x = 1, y = 1},
+			onesGoal = {
+				--{x = 1, y = 1},
 			},
-			onesGoal = { --ones goal
-				{x = 1, y = 1},
+			zeroes = {
+				--{x = 4, y = 1},
+			},
+			ones = {
+				--{x = 1, y = 1},
 			},
 		}, 
 		"tutorial"

@@ -11,10 +11,12 @@ function Game:new(w, h)
 	--[[============================= general ================================]]
 
 	love.math.getRandomSeed(os.time())
-	love.graphics.setDefaultFilter("nearest", "nearest")
+	-- crispy texture loading
+	love.graphics.setDefaultFilter("nearest", "nearest") 
 
 	--[[========================== attributes ================================]]
 
+	--the width and height of the game
 	self.width, self.height = w, h
 	
 	self.window = {}
@@ -30,8 +32,8 @@ function Game:new(w, h)
 	self.tileset.height = self.tileset.image:getHeight()
 	self.tileset.margin = 1
 	self.tileset.spacing = 2
-	self.tileset.rows = 2
-	self.tileset.cols = 4
+	self.tileset.rows = 3
+	self.tileset.cols = 3
 	
 	self.tile = {}
 	self.tile.width = (self.tileset.width / self.tileset.cols) - self.tileset.spacing
@@ -48,6 +50,7 @@ function Game:new(w, h)
 	self.CONST.zeroHeart = 6
 	self.CONST.oneHeart = 7
 	self.CONST.arrow = 8
+	self.CONST.AButton = 9
 	self.CONST.spacing = 4
 	
 	self.font = love.graphics.newImageFont("resources/fonts/pixel.png",
@@ -67,6 +70,7 @@ function Game:new(w, h)
 	
 	love.graphics.setFont(self.font)
 	
+	-- makes the quads
 	for i = 0, self.tileset.rows - 1 do
 		for j = 0, self.tileset.cols - 1 do
 			table.insert(self.quads,
@@ -80,6 +84,7 @@ function Game:new(w, h)
 		end
 	end
 	
+	-- push library
 	push:setupScreen(self.width, self.height, 
 		self.window.width, self.window.height,
 		{

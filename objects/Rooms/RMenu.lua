@@ -12,7 +12,7 @@ function RMenu:new()
 			down = {"key:down", "button:dpdown"},
 			action = {"key:x", "button:a"},
 		},
-		joystick = love.joystick.getJoysticks()[1]
+		joystick = game.joysticks[1]
 	}
 	
 	--[[======================================================================]]
