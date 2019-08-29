@@ -20,10 +20,12 @@ function RGame:new()
 end
 
 function RGame:update(dt)
-	self.player:update(dt)
+	if self.current_stage then
+		self.player:update(dt)
 	
-	self.player.x = lume.clamp(self.player.x, 1, self.current_stage.width)
-	self.player.y = lume.clamp(self.player.y, 1, self.current_stage.height)
+		self.player.x = lume.clamp(self.player.x, 1, self.current_stage.width)
+		self.player.y = lume.clamp(self.player.y, 1, self.current_stage.height)
+	end
 end
 
 function RGame:draw()
@@ -71,13 +73,17 @@ function RGame:draw()
 end
 
 function RGame:keypressed(key, scancode, isrepeat)
-	if key == "escape" then
-		game:gotoRoom("RMenu")
-	end
+	
 end
 
 function RGame:keyreleased(key)
+	if key == "escape" then
+		game:gotoRoom("RMenu")
+	end
 	
+	if key == "r" then -- goto same stage
+		self:gotoStage(self.current_stage.name)
+	end
 end
 
 local function verifyStage(stage)
@@ -112,10 +118,14 @@ function RGame:addStage(stage, name)
 		io.write("stage: ")
 		if name then
 			self.stages[name] = stage
+			self.stages[name].name = name -- the stage name in the table
 			print(name)
+			print("name stage: " .. self.stages[name].name)
 		else
 			table.insert(self.stages, stage)
+			self.stages[#self.stages].name = #self.stages
 			print(#self.stages)
+			print("name stage: " .. self.stages[#self.stages].name)
 		end
 		print("good stage!")
 		print()
