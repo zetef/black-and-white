@@ -21,10 +21,14 @@ end
 
 function RMenu:update(dt)
 	self.input:update()
+	
+	if self.input:released("action") then
+		game:gotoRoom("RGame")
+	end
 end
 
 function RMenu:draw()
-	love.graphics.print("menu", 0, 0)
+	love.graphics.print("black and white", 0, 0)
 end
 
 function RMenu:keypressed(key, scancode, isrepeat)

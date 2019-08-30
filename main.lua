@@ -1,11 +1,12 @@
 local Game = require "objects.Game"
+local Vector = require "libraries.hump.vector"
 
 function love.load()
 	game = Game(128, 128) --intentionally global
 	game:addRoom("RMenu")
 	game:addRoom("RGame")
 	game:addRoom("ROver")
-	
+	game:gotoRoom("RGame")
 	-- good to know: max width/height is 6
 	
 	game.rooms.RGame:addStage( --tutorial
@@ -15,17 +16,25 @@ function love.load()
 			heart = game.CONST.zeroHeart,
 			x = 3, 
 			y = 3,
-			zeroesGoal = {
-				--{x = 5, y = 1},
-			},
-			onesGoal = {
-				--{x = 1, y = 1},
-			},
-			zeroes = {
-				--{x = 4, y = 1},
-			},
-			ones = {
-				--{x = 1, y = 1},
+			tiles = {
+				zeroesGoal = {
+					--{x = 1, y = 1},
+					Vector(2, 3),
+				},
+				onesGoal = {
+					--{x = 5, y = 1},
+					Vector(4, 3),
+				},
+				zeroes = {
+					--{x = 4, y = 1},
+					--{x = 2, y = 3}
+					Vector(4, 1),
+					Vector(3, 2),
+				},
+				ones = {
+					--{x = 1, y = 1},
+					Vector(3, 4)
+				}
 			},
 		}, 
 		"tutorial"
@@ -36,8 +45,6 @@ function love.load()
 	-- end
 	
 	game.rooms.RGame:gotoStage("tutorial")
-	
-	game:gotoRoom("RGame")
 	
 end
 

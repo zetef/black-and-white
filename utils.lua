@@ -23,8 +23,8 @@ utils.joystick_details = function(joystick) -- print some joystick info
 	print()
 end
 
---we have to recalculate level_width and level_height bcs we call them
---many times in different rooms
+--we have to recalculate stagew and stageh bcs we call them
+--many times in different stages
 
 utils.stagew = function() -- the current stage width
 	return game.rooms.RGame.current_stage.width *
@@ -46,6 +46,11 @@ utils.ypos = function(y) -- in tile number
 	local stage_height = utils.stageh()
 	return (game.height -  stage_height) / 2 +
 	y * (game.tile.width + game.CONST.spacing)
+end
+
+utils.inbound = function(v) -- a vector
+	return v.x >= 1 and v.x <= game.rooms.RGame.current_stage.width and
+		v.y >= 1 and v.y <= game.rooms.RGame.current_stage.height
 end
 
 utils.pingpong = function(v, s, d) -- a more suited pingpong in my case

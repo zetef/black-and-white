@@ -23,8 +23,8 @@ function RGame:update(dt)
 	if self.current_stage then
 		self.player:update(dt)
 	
-		self.player.x = lume.clamp(self.player.x, 1, self.current_stage.width)
-		self.player.y = lume.clamp(self.player.y, 1, self.current_stage.height)
+		--self.player.x = lume.clamp(self.player.x, 1, self.current_stage.width)
+		--self.player.y = lume.clamp(self.player.y, 1, self.current_stage.height)
 	end
 end
 
@@ -50,18 +50,18 @@ function RGame:draw()
 		end
 		
 		--draw the goal before the actual zeroes/ones
-		for _, tile in ipairs(self.current_stage.zeroesGoal) do
+		for _, tile in ipairs(self.current_stage.tiles.zeroesGoal) do
 			utils.drawTile(game.CONST.zeroGoal, tile.x - 1, tile.y - 1)
 		end
-		for _, tile in ipairs(self.current_stage.onesGoal) do
+		for _, tile in ipairs(self.current_stage.tiles.onesGoal) do
 			utils.drawTile(game.CONST.oneGoal, tile.x - 1, tile.y - 1)
 		end
 		
 		-- draw the zeroes/ones
-		for _, tile in ipairs(self.current_stage.zeroes) do
+		for _, tile in ipairs(self.current_stage.tiles.zeroes) do
 			utils.drawTile(game.CONST.zero, tile.x - 1, tile.y - 1)
 		end
-		for _, tile in ipairs(self.current_stage.ones) do
+		for _, tile in ipairs(self.current_stage.tiles.ones) do
 			utils.drawTile(game.CONST.one, tile.x - 1, tile.y - 1)
 		end
 	
@@ -95,10 +95,11 @@ local function verifyStage(stage)
 	req["heart"] = true
 	req["x"] = true 
 	req["y"] = true 
-	req["zeroes"] = true 
-	req["zeroesGoal"] = true 
-	req["ones"] = true
-	req["onesGoal"] = true
+	req["tiles"] = true
+	-- req["zeroes"] = true 
+	-- req["zeroesGoal"] = true 
+	-- req["ones"] = true
+	-- req["onesGoal"] = true
 	
 	for k, v in pairs(stage) do
 		if not req[k] then
@@ -136,6 +137,7 @@ function RGame:gotoStage(stage)
 	if self.stages[stage] then
 		self.current_stage = self.stages[stage]
 		self.player.heart = self.current_stage.heart
+		
 		--if i mistakanly put the player beyond the width or height, clamp
 		self.player.x = lume.clamp(self.current_stage.x, 
 			1, self.current_stage.width
