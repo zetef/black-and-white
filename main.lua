@@ -1,5 +1,5 @@
 local Game = require "objects.Game"
-local Vector = require "libraries.hump.vector"
+local utils = require "utils"
 
 function love.load()
 	game = Game(128, 128) --intentionally global
@@ -9,36 +9,32 @@ function love.load()
 	game:gotoRoom("RGame")
 	-- good to know: max width/height is 6
 	
-	game.rooms.RGame:addStage( --tutorial
-		{
-			width = 5, 
-			height = 5,
-			heart = game.CONST.zeroHeart,
-			x = 3, 
-			y = 3,
-			tiles = {
-				zeroesGoal = {
-					--{x = 1, y = 1},
-					Vector(2, 3),
-				},
-				onesGoal = {
-					--{x = 5, y = 1},
-					Vector(4, 3),
-				},
-				zeroes = {
-					--{x = 4, y = 1},
-					--{x = 2, y = 3}
-					Vector(4, 1),
-					Vector(3, 2),
-				},
-				ones = {
-					--{x = 1, y = 1},
-					Vector(3, 4)
-				}
-			},
-		}, 
-		"tutorial"
-	)
+	game.rooms.RGame:addStage("tutorial")
+		-- {
+			-- width = 5, 
+			-- height = 5,
+			-- L1 = utils.mapfrom("resources/maps/tutorial.json")
+			-- heart = game.CONST.zeroHeart,
+			-- x = 3, 
+			-- y = 3,
+			-- zeroGoal = {
+				--Vector(2, 3),
+			-- },
+			-- oneGoal = {
+				--Vector(4, 3),
+			-- }
+			-- tiles = {
+				-- zero = {
+					--Vector(4, 1),
+					-- Vector(3, 2),
+					-- Vector(3, 4),
+					-- Vector(2, 3),
+				-- },
+				-- one = {
+					--Vector(3, 4)
+				-- }
+			-- }
+		-- }
 	
 	-- for k, v in pairs(game.rooms.RGame.stages) do
 		-- print(k, v)

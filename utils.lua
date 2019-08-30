@@ -1,3 +1,6 @@
+local lume = require "libraries.lume.lume"
+local json = require "libraries.json.json"
+
 local utils = {}
 
 utils.joystick_details = function(joystick) -- print some joystick info
@@ -61,12 +64,64 @@ utils.pingpong = function(v, s, d) -- a more suited pingpong in my case
 	end
 end
 
+utils.either = function(a, b) -- returns the var one that is not nil
+	if a then
+		return a
+	else
+		return b
+	end
+end
+
 utils.drawTile = function(tile, x, y) -- x and y in tile numbers
 	love.graphics.draw(game.tileset.image,
 		game.quads[tile],
 		utils.xpos(x),
 		utils.ypos(y)
 	)
+end
+
+utils.fileData = function(file) -- returns the whole contents of a file
+	local f = assert(io.open(file, "rb"))
+	local data = f:read("*all")
+	f:close()
+	return data
+end
+
+utils.array1Dto2D = function(array, w, h) -- returns a 2D arr from 1D
+	local m = {}
+	for i = 1, h do
+		m[i] = {}
+		for j = 1, w do
+			m[i][j] = array[(i - 1) * h + j]
+		end
+	end
+	return m
+end
+
+utils.getMap = function(mapname) -- returns a map from a json file by tiled
+	local m = {}
+	local f = "resources/maps/" .. mapname .. ".json"
+	local data = utils.fileData(f)
+	data = json.decode(data)
+	local zeroHeartPos = lume.find(data.layers[2].data,
+		game.CONST.zeroHeart
+	)
+	local oneHeartPos = lume.find(data.layers[2].data,
+		game.CONST.oneHeart
+	)
+	local pos = utils.either(zeroHeartPos, oneHeartPos)
+	
+	m.name = mapname
+	m.width = data.width
+	m.height = data.height
+	m.x = pos % m.height
+	m.y = math.floor(pos / m.height) + 1
+	m.heart = data.layers[2].data[pos]
+	m.layers = {}
+	for i, v in ipairs(data.layers) do
+		m.layers[i] = utils.array1Dto2D(v.data, v.width, v.height)
+	end
+	return m
 end
 
 return utils
