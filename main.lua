@@ -10,7 +10,9 @@ function love.load()
 	-- good to know: max width/height is 6
 	
 	game.rooms.RGame:addStage("tutorial")
-		-- {
+	game.rooms.RGame:gotoStage("tutorial")
+	
+	--[[ 	{
 			-- width = 5, 
 			-- height = 5,
 			-- L1 = utils.mapfrom("resources/maps/tutorial.json")
@@ -39,9 +41,7 @@ function love.load()
 	-- for k, v in pairs(game.rooms.RGame.stages) do
 		-- print(k, v)
 	-- end
-	
-	game.rooms.RGame:gotoStage("tutorial")
-	
+	]]
 end
 
 function love.update(dt)

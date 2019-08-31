@@ -1,9 +1,9 @@
 local Object = require "libraries.classic.classic"
-local Timer = require "libraries.hump.timer"
+local Vector = require "libraries.hump.vector"
 local lume = require "libraries.lume.lume"
 local utils = require "utils"
 
---local Tile = require "objects.Tile"
+local Tile = require "objects.Tile"
 local Player = require "objects.Player"
 
 local RGame = Object:extend()
@@ -14,8 +14,7 @@ function RGame:new()
 	self.current_stage = nil
 	self.stages = {}
 	
-	self.player = Player()
-	self.timer = Timer()
+	self.player = Player(0, 0, game.CONST.zeroHeart)
 	
 	--[[======================================================================]]
 	
@@ -23,7 +22,15 @@ end
 
 function RGame:update(dt)
 	if self.current_stage then
-		self.timer:update(dt)
+		for layer, m in ipairs(self.current_stage.layers) do
+			for i, row in ipairs(m) do
+				for j, tile in ipairs(row) do
+					if tile ~= 0 then 
+						tile:update()
+					end
+				end
+			end
+		end
 		self.player:update(dt)
 	end
 end
@@ -35,54 +42,29 @@ function RGame:draw()
 		--draw the current stage
 		--TODO: optimize the drawing. tip: do not overdraw!
 		
-		-- the stage bound
-		love.graphics.rectangle("line", 
-			-- minus 2 to center
-			utils.xpos(0) - 2, utils.ypos(0) - 2, 
-			utils.stagew(), utils.stageh()
-		)
-		
-		for layer, map in ipairs(self.current_stage.layers) do
-			for i, row in ipairs(map) do
+		for layer, m in ipairs(self.current_stage.layers) do
+			for i, row in ipairs(m) do
 				for j, tile in ipairs(row) do
-					--io.write(tile .. " ")
-					if tile ~= 0 and tile ~= game.CONST.zeroHeart and 
-					   tile ~= game.CONST.oneHeart then 
-						utils.drawTile(tile, j - 1, i - 1)
+					if tile ~= 0 then 
+						tile:draw()
 					end
 				end
-				--print()
 			end
-			--print()
 		end
 		
-		--all the empty tiles
-		-- for i = 0, self.current_stage.height - 1 do
-			-- for j = 0, self.current_stage.width - 1 do
-				-- utils.drawTile(game.CONST.empty, j, i)
-			-- end
-		-- end
-		
-		--draw the goal before the actual zeroes/ones
-		-- for _, tile in ipairs(self.current_stage.tiles.zeroGoal) do
-			-- utils.drawTile(game.CONST.zeroGoal, tile.x - 1, tile.y - 1)
-		-- end
-		-- for _, tile in ipairs(self.current_stage.tiles.oneGoal) do
-			-- utils.drawTile(game.CONST.oneGoal, tile.x - 1, tile.y - 1)
-		-- end
-		
-		-- draw the zeroes/ones
-		-- for _, tile in ipairs(self.current_stage.tiles.zero) do
-			-- utils.drawTile(game.CONST.zero, tile.x - 1, tile.y - 1)
-		-- end
-		-- for _, tile in ipairs(self.current_stage.tiles.one) do
-			-- utils.drawTile(game.CONST.one, tile.x - 1, tile.y - 1)
-		-- end
-	
 		--draw the player (if needed to)
 		--if self.player.drawFlag then
 		self.player:draw()
 		--end
+		
+		-- the stage bound
+		love.graphics.rectangle("line",
+			-- minus 2 to center
+			utils.xpos(1) - 2, utils.ypos(1) - 2, 
+			utils.stagew(), utils.stageh()
+		)
+	
+		
 	end
 end
 
@@ -99,10 +81,18 @@ function RGame:keyreleased(key)
 		self:gotoStage(self.current_stage.name)
 	end
 	
-	if key == "return" then
-		for k, v in pairs(self.stages[self.current_stage.name].tiles.zero) do
-			print(k, v)
+	if key == "return" then -- show the layers
+		for layer, m in ipairs(self.current_stage.layers) do
+			print("layer: " .. layer)
+			for i, row in ipairs(m) do
+				for j, tile in ipairs(row) do
+					io.write(tostring(tile) .. " ")
+				end
+				print()
+			end
+			print()
 		end
+		print()
 	end
 end
 
@@ -137,29 +127,37 @@ end
 
 function RGame:addStage(stage)
 	local map = utils.getMap(stage)
-	io.write("stage: " .. stage .. "\n")
-	self.stages[stage] = map
 	
-	for k, v in pairs(map) do
-		print(k, v)
+	-- my proccessing. the getMap function did his job of
+	-- parsing a json file made from a Tiled map.
+	-- the below code is the thing I want to do to it,
+	-- that of transforming non-zero numbers into Tiles with their
+	-- corresponding color, x, y etc
+	
+	for layer, m in ipairs(map.layers) do
+		for i, row in ipairs(m) do
+			for j, tile in ipairs(row) do
+				if tile ~= 0 then
+					map.layers[layer][i][j] = Tile(j, i, tile)
+				end
+			end
+		end
 	end
-	--self.stages[stage.name].name = name -- the stage name in the table
-	--print("name stage: " .. self.stages[name].name)
-	--print("good stage!")
-	--print()
+	
+	self.stages[stage] = map
 end
 
 function RGame:gotoStage(stage)
 	if self.stages[stage] then
 		self.current_stage = self.stages[stage]
 		
-		self.player.heart = self.current_stage.heart
+		self.player.color = self.current_stage.color
 		
 		--if i mistakanly put the player beyond the width or height, clamp
-		self.player.x = lume.clamp(self.current_stage.x, 
+		self.player.pos.x = lume.clamp(self.current_stage.x, 
 			1, self.current_stage.width
 		)
-		self.player.y = lume.clamp(self.current_stage.y, 
+		self.player.pos.y = lume.clamp(self.current_stage.y, 
 			1, self.current_stage.height
 		)
 	else

@@ -1,6 +1,8 @@
 local lume = require "libraries.lume.lume"
 local json = require "libraries.json.json"
 
+-- local Tile = require "objects.Tile"
+
 local utils = {}
 
 utils.joystick_details = function(joystick) -- print some joystick info
@@ -40,15 +42,17 @@ utils.stageh = function() -- the current stage height
 end
 
 utils.xpos = function(x) -- in tile number
+	-- minus 1 bcs it ranges then from 0 to x - 1 instead of 1 to x
 	local stage_width = utils.stagew()
 	return (game.width - stage_width) / 2 +
-	x * (game.tile.width + game.CONST.spacing)
+	(x - 1) * (game.tile.width + game.CONST.spacing)
 end
 
 utils.ypos = function(y) -- in tile number
+	-- minus 1 bcs it ranges then from 0 to y - 1 instead of 1 to y
 	local stage_height = utils.stageh()
 	return (game.height -  stage_height) / 2 +
-	y * (game.tile.width + game.CONST.spacing)
+	(y - 1) * (game.tile.width + game.CONST.spacing)
 end
 
 utils.inbound = function(v) -- a vector
@@ -72,11 +76,11 @@ utils.either = function(a, b) -- returns the var one that is not nil
 	end
 end
 
-utils.drawTile = function(tile, x, y) -- x and y in tile numbers
+utils.drawTile = function(tile, v) -- vector for position in tile numbers
 	love.graphics.draw(game.tileset.image,
 		game.quads[tile],
-		utils.xpos(x),
-		utils.ypos(y)
+		utils.xpos(v.x),
+		utils.ypos(v.y)
 	)
 end
 
@@ -114,12 +118,16 @@ utils.getMap = function(mapname) -- returns a map from a json file by tiled
 	m.name = mapname
 	m.width = data.width
 	m.height = data.height
-	m.x = pos % m.height
-	m.y = math.floor(pos / m.height) + 1
-	m.heart = data.layers[2].data[pos]
+	-- player position
+	m.x = pos % m.height; if m.x == 0 then m.x = m.width end
+	m.y = lume.round(pos / m.height)
+	-- player color
+	m.color = data.layers[2].data[pos] 
+	data.layers[2].data[pos] = 0 -- delete the player number from the map
 	m.layers = {}
 	for i, v in ipairs(data.layers) do
 		m.layers[i] = utils.array1Dto2D(v.data, v.width, v.height)
+		-- m.layers[i].hide = false -- for future versions
 	end
 	return m
 end
