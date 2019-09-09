@@ -11,7 +11,7 @@ utils.joystick_details = function(joystick) -- print some joystick info
 		print()
 		return nil
 	end
-	
+
 	print("Name: " .. joystick:getName())
 	print("GUID, ID: " .. joystick:getGUID() .. ", " .. joystick:getID())
 	print("Button Count: " .. joystick:getButtonCount())
@@ -37,7 +37,7 @@ utils.stagew = function() -- the current stage width
 end
 
 utils.stageh = function() -- the current stage height
-	return game.rooms.RGame.current_stage.height * 
+	return game.rooms.RGame.current_stage.height *
 	(game.tile.height + game.CONST.spacing)
 end
 
@@ -84,6 +84,10 @@ utils.drawTile = function(tile, v) -- vector for position in tile numbers
 	)
 end
 
+utils.isPlayer = function(tile)
+	return tile == game.CONST.zeroHeart or tile == game.CONST.oneHeart
+end
+
 utils.fileData = function(file) -- returns the whole contents of a file
 	local f = assert(io.open(file, "rb"))
 	local data = f:read("*all")
@@ -114,7 +118,7 @@ utils.getMap = function(mapname) -- returns a map from a json file by tiled
 		game.CONST.oneHeart
 	)
 	local pos = utils.either(zeroHeartPos, oneHeartPos)
-	
+
 	m.name = mapname
 	m.width = data.width
 	m.height = data.height
@@ -122,7 +126,7 @@ utils.getMap = function(mapname) -- returns a map from a json file by tiled
 	m.x = pos % m.height; if m.x == 0 then m.x = m.width end
 	m.y = lume.round(pos / m.height)
 	-- player color
-	m.color = data.layers[2].data[pos] 
+	m.color = data.layers[2].data[pos]
 	data.layers[2].data[pos] = 0 -- delete the player number from the map
 	m.layers = {}
 	for i, v in ipairs(data.layers) do

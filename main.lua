@@ -1,5 +1,4 @@
 local Game = require "objects.Game"
-local utils = require "utils"
 
 function love.load()
 	game = Game(128, 128) --intentionally global
