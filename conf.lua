@@ -5,8 +5,8 @@ function love.conf(t)
     
     t.window.title = 'black and white'     	-- The window title (string)
     t.window.icon = 'resources/icon/b&w.png'-- Filepath to an image to use as the window's icon (string)
-    -- t.window.width = 600	           		-- The window width (number)
-    -- t.window.height = 480	           		-- The window height (number)
+    t.window.width = 512                   	-- The window width (number)
+    t.window.height = 768                  	-- The window height (number)
     t.window.vsync = -1                    	-- Vertical sync mode (number)
  
     -- t.modules.audio = true              	-- Enable the audio module (boolean)

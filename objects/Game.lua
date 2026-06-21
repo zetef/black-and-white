@@ -19,10 +19,15 @@ function Game:new(w, h)
 	--the width and height of the game
 	self.width, self.height = w, h
 
+	-- feed push the window's current size as-is: halving it here and then
+	-- asking push to resize to that halved value caused a real resize
+	-- round-trip (love.window.updateMode), which on fractional-DPI displays
+	-- doesn't come back symmetric and left push's offset/scale math
+	-- pointing at a surface that didn't match reality (rendered to a fully
+	-- black screen). conf.lua now sets an explicit window size, so this is
+	-- a no-op resize, not a real one.
 	self.window = {}
 	self.window.width, self.window.height = love.graphics.getDimensions()
-	self.window.width = self.window.width * .5
-	self.window.height = self.window.height * .5
 
 	self.joysticks = love.joystick.getJoysticks()
 
