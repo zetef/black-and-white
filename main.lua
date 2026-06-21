@@ -5,7 +5,7 @@ function love.load()
 	game:addRoom("RMenu")
 	game:addRoom("RGame")
 	game:addRoom("ROver")
-	game:gotoRoom("RGame")
+	game:gotoRoom("RMenu")
 	-- good to know: max width/height is 6
 	
 	game.rooms.RGame:addStage("tutorial")
