@@ -49,10 +49,14 @@ function Piece:update(dt)
 					tile = tile - game.CONST.colorDiff
 				end
 
-				if self.color ~= tile - 5 or self.color ~= tile then
+				local selfColor = self.color
+				if utils.isPlayer(selfColor) then
+					selfColor = selfColor - game.CONST.colorDiff
+				end
+
+				if selfColor ~= tile then -- opposite colours repel
 					local opp = (direction + CONST.opposite) % CONST.total
 					if opp == 0 then opp = CONST.left end -- tiles[opp]
-					print(direction .. " " ..  opp)
 					tmp = self.pos + tiles[opp]
 					-- tmp.x = lume.round(self.drawPos.x) + tiles[opp].x
 					-- tmp.y = lume.round(self.drawPos.y) + tiles[opp].y
