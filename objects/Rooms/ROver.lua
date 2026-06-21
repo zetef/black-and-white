@@ -24,7 +24,7 @@ function ROver:update(dt)
 end
 
 function ROver:draw()
-	love.graphics.print("over", 0, 0)
+	love.graphics.print("GAME OVER", 0, 0)
 end
 
 function ROver:keypressed(key, scancode, isrepeat)

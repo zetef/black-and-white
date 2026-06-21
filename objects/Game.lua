@@ -58,8 +58,8 @@ function Game:new(w, h)
 	self.acceptInput = true
 
 	self.font = love.graphics.newImageFont("resources/fonts/pixel.png",
-		" abcdefghijklmnopqrstuvwxyz" ..
-		":.%"
+		" ABCDEFGHIJKLMNOPQRSTUVWXYZ" ..
+		"0123456789:.%"
 	)
 
 	self.current_room = nil
