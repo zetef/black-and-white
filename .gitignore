@@ -42,3 +42,6 @@ luac.out
 
 # Folders
 trash_can/
+
+# VS Code workspace files (machine-specific)
+*.code-workspace
