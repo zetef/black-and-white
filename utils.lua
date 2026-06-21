@@ -123,8 +123,8 @@ utils.getMap = function(mapname) -- returns a map from a json file by tiled
 	m.width = data.width
 	m.height = data.height
 	-- player position
-	m.x = pos % m.height; if m.x == 0 then m.x = m.width end
-	m.y = lume.round(pos / m.height)
+	m.x = (pos - 1) % m.width + 1
+	m.y = math.floor((pos - 1) / m.width) + 1
 	-- player color
 	m.color = data.layers[2].data[pos]
 	data.layers[2].data[pos] = 0 -- delete the player number from the map
