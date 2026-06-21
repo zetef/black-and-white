@@ -28,7 +28,16 @@ function RMenu:update(dt)
 end
 
 function RMenu:draw()
-	love.graphics.print("black and white", 0, 0)
+	local lineHeight = game.font:getHeight()
+	local titleHeight = lineHeight * 2 -- "BLACK" + "AND WHITE"
+	local gap = lineHeight
+	local promptHeight = lineHeight
+
+	local blockHeight = titleHeight + gap + promptHeight
+	local startY = (game.height - blockHeight) / 2
+
+	love.graphics.printf("BLACK\nAND WHITE", 0, startY, game.width, "center")
+	love.graphics.printf("X TO PLAY", 0, startY + titleHeight + gap, game.width, "center")
 end
 
 function RMenu:keypressed(key, scancode, isrepeat)
