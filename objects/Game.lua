@@ -62,6 +62,10 @@ function Game:new(w, h)
 		"0123456789:.%"
 	)
 
+	-- reserved strip at the bottom of the canvas for stage hint text,
+	-- kept out of the play-area centering math (see utils.ypos)
+	self.hudHeight = self.font:getHeight() * 4
+
 	self.current_room = nil
 	--self.rooms_names = {"Menu", "Game", "Over"}
 	self.rooms = {}

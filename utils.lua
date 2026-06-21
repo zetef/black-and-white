@@ -50,8 +50,11 @@ end
 
 utils.ypos = function(y) -- in tile number
 	-- minus 1 bcs it ranges then from 0 to y - 1 instead of 1 to y
+	-- centered in the play area, not the full canvas - the bottom
+	-- game.hudHeight px are reserved for stage hint text
 	local stage_height = utils.stageh()
-	return (game.height -  stage_height) / 2 +
+	local play_height = game.height - game.hudHeight
+	return (play_height - stage_height) / 2 +
 	(y - 1) * (game.tile.width + game.CONST.spacing)
 end
 

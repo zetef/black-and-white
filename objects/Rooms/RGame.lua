@@ -65,6 +65,26 @@ function RGame:draw()
 			utils.stagew(), utils.stageh()
 		)
 
+		if self.current_stage.name == "tutorial" then
+			self:drawHints()
+		end
+
+	end
+end
+
+function RGame:drawHints()
+	local lineHeight = game.font:getHeight()
+	local hudY = game.height - game.hudHeight
+	local hints = {
+		"ARROWS:MOVE",
+		"X:SWAP COLOR",
+		"SAME:PULL",
+		"OPP:PUSH",
+	}
+	for i, line in ipairs(hints) do
+		love.graphics.printf(line, 0, hudY + (i - 1) * lineHeight,
+			game.width, "center"
+		)
 	end
 end
 

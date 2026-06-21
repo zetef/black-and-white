@@ -1,7 +1,7 @@
 local Game = require "objects.Game"
 
 function love.load()
-	game = Game(128, 128) --intentionally global
+	game = Game(128, 192) --intentionally global
 	game:addRoom("RMenu")
 	game:addRoom("RGame")
 	game:addRoom("ROver")
